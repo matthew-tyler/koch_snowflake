@@ -101,7 +101,7 @@ def arrange(curve):
 # mirror = vertices.dot(refthroughLine)
 
 
-line = kochCurve(12)
+line = kochCurve(2)
 
 line = arrange(line)
 
