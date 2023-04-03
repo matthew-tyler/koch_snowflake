@@ -83,25 +83,25 @@ def arrange(curve):
     return np.concatenate((bottom[::-1], left, right))
 
 
-vertices = np.array([[0, 0], [9, 0], [3, np.sqrt(3)/2 * 9], [0, 0]])
+# vertices = np.array([[0, 0], [9, 0], [3, np.sqrt(3)/2 * 9], [0, 0]])
 
-line = np.array([[0, 0], [3, 0]])
+# line = np.array([[0, 0], [3, 0]])
 
-sixty = getRotation(-60)
-negsixty = getRotation(60)
-
-
-xmirror = np.array([[1, 0], [0, -1]])
-ymirror = np.array([[-1, 0], [0, 1]])
-linexy = np.array([[0, 1], [1, 0]])
-
-refOrigin = np.array([[-1, 0], [0, -1]])
-refthroughLine = np.array([[0, -1], [-1, 0]])
-
-mirror = vertices.dot(refthroughLine)
+# sixty = getRotation(-60)
+# negsixty = getRotation(60)
 
 
-line = kochCurve(14)
+# xmirror = np.array([[1, 0], [0, -1]])
+# ymirror = np.array([[-1, 0], [0, 1]])
+# linexy = np.array([[0, 1], [1, 0]])
+
+# refOrigin = np.array([[-1, 0], [0, -1]])
+# refthroughLine = np.array([[0, -1], [-1, 0]])
+
+# mirror = vertices.dot(refthroughLine)
+
+
+line = kochCurve(12)
 
 line = arrange(line)
 
