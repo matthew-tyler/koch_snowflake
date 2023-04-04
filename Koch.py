@@ -1,10 +1,27 @@
-import numpy as np
-import matplotlib.pyplot as plt
+import functools
 import math as maths
+import sys
+import threading
 
+import numpy as np
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QSlider, QVBoxLayout,
+                             QWidget)
+from vispy import app, scene, visuals
+from vispy.visuals.shaders import ModularProgram
+
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QSlider, QLabel
+from PyQt5.QtCore import Qt
+from PyQt5.QtOpenGL import QGLWidget
+from OpenGL.GL import *
+
+from PyQt5.QtCore import QPointF
+from PyQt5.QtGui import QWheelEvent
+from PyQt5.QtCore import QPointF, Qt
+from PyQt5.QtGui import QWheelEvent, QMouseEvent
 
 # An array of points representing a straight line.
-LINE = np.array([[0, 0], [1, 0]])
+LINE = np.array([[0, 0], [3, 0]])
 
 # An array of points representing the 2nd order koch curve. _/\_ <- But like, pointier.
 ORDER_2_KOCH_CURVE = np.array(
@@ -136,12 +153,24 @@ def arrange(curve: np.ndarray) -> np.ndarray:
     return np.concatenate((bottom[::-1], left, right))
 
 
-line = kochCurve(4)
 
-line = arrange(line)
+def snowflake(order):
+    line = kochCurve(order)
+    return arrange(line)
 
-plt.figure(figsize=(5, 5))
-plt.axis('equal')
 
-plt.plot(line[:, 0], line[:, 1])
-plt.show()
+@functools.lru_cache(maxsize=None)
+def cached_snowflake(order):
+    print("Loaded order", order)
+    return snowflake(order)
+
+
+def preload_snowflakes(max_order):
+    for order in range(max_order, 0, -1):
+        cached_snowflake(order)
+        
+
+# Preload snowflake points up to order 13 in a separate thread
+preload_thread = threading.Thread(target=preload_snowflakes, args=(13,))
+preload_thread.start()
+
