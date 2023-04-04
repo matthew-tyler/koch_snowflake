@@ -1,24 +1,7 @@
 import functools
 import math as maths
-import sys
 import threading
-
 import numpy as np
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QSlider, QVBoxLayout,
-                             QWidget)
-from vispy import app, scene, visuals
-from vispy.visuals.shaders import ModularProgram
-
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QSlider, QLabel
-from PyQt5.QtCore import Qt
-from PyQt5.QtOpenGL import QGLWidget
-from OpenGL.GL import *
-
-from PyQt5.QtCore import QPointF
-from PyQt5.QtGui import QWheelEvent
-from PyQt5.QtCore import QPointF, Qt
-from PyQt5.QtGui import QWheelEvent, QMouseEvent
 
 # An array of points representing a straight line.
 LINE = np.array([[0, 0], [3, 0]])
@@ -78,7 +61,7 @@ def kochCurve(order: int) -> np.ndarray:
     # Start with the order-2 Koch curve as the initial curve
     kochCurve = ORDER_2_KOCH_CURVE
 
-    # Recursively generate the Koch curve up to the desired order
+    # Generate the Koch curve up to the desired order
     for _ in range(0, order - 2):
 
         # Copy the current curve to use as the base curve
