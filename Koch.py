@@ -3,28 +3,6 @@ import matplotlib.pyplot as plt
 import math as maths
 
 
-def segmentLine(line):
-
-    p1 = line[0]
-    p2 = line[1]
-
-    p1New = [(2/3)*p1[0] + (1/3)*p2[0], (2/3)*p1[1] + (1/3)*p2[1]]
-    p2New = [(1/3)*p1[0] + (2/3)*p2[0], (1/3)*p1[1] + (2/3)*p2[1]]
-
-    dist = maths.dist(p1New, p2New)
-
-    tip = [1.5, np.sqrt(3) / 2 * 1]
-
-    return np.array([p1, p1New, tip, p2New, p2])
-
-
-def getRotation(degrees):
-    theta = np.radians(degrees)
-    c, s = np.cos(theta), np.sin(theta)
-    R = np.array(((c, -s), (s, c)))
-    return R
-
-
 def rotate(p, origin=(0, 0), degrees=0):
     angle = np.radians(degrees)
     R = np.array([[np.cos(angle), -np.sin(angle)],
@@ -43,7 +21,7 @@ def kochCurve(order):
 
     reflectionMatrix = np.array([[-1, 0], [0, 1]])
 
-    for i in range(0, order - 1):
+    for _ in range(0, order - 2):
         baseCurve = kochCurve.copy()
         curve = baseCurve.copy()
 
@@ -83,25 +61,7 @@ def arrange(curve):
     return np.concatenate((bottom[::-1], left, right))
 
 
-# vertices = np.array([[0, 0], [9, 0], [3, np.sqrt(3)/2 * 9], [0, 0]])
-
-# line = np.array([[0, 0], [3, 0]])
-
-# sixty = getRotation(-60)
-# negsixty = getRotation(60)
-
-
-# xmirror = np.array([[1, 0], [0, -1]])
-# ymirror = np.array([[-1, 0], [0, 1]])
-# linexy = np.array([[0, 1], [1, 0]])
-
-# refOrigin = np.array([[-1, 0], [0, -1]])
-# refthroughLine = np.array([[0, -1], [-1, 0]])
-
-# mirror = vertices.dot(refthroughLine)
-
-
-line = kochCurve(2)
+line = kochCurve(3)
 
 line = arrange(line)
 
