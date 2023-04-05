@@ -5,7 +5,6 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.widgets import Slider
-from manim import *
 
 # An array of points representing a straight line.
 LINE = np.array([[0, 0], [3, 0]])
