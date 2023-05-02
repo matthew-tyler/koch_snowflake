@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.widgets import Slider
 
+#
+#   Matt Tyler - 1049833
+#
 # An array of points representing a straight line.
 LINE = np.array([[0, 0], [3, 0]])
 
@@ -44,6 +47,7 @@ def rotate(p: np.ndarray, origin: np.ndarray = (0, 0), degrees: float = 0):
     o = np.atleast_2d(origin)
     p = np.atleast_2d(p)
     return np.squeeze((R @ (p.T-o.T) + o.T).T)
+
 
 def kochCurve(order: int) -> np.ndarray:
     """
@@ -96,6 +100,7 @@ def kochCurve(order: int) -> np.ndarray:
 
     return kochCurve
 
+
 def arrange(curve: np.ndarray) -> np.ndarray:
     """
     Arranges the given Koch curve into a snowflake shape by rotating and flipping it.
@@ -136,6 +141,7 @@ def arrange(curve: np.ndarray) -> np.ndarray:
 
     return np.concatenate((bottom[::-1], left, right))
 
+
 def snowflake(order: int) -> np.ndarray:
     """
     Generate a Koch snowflake of a given order.
@@ -168,6 +174,7 @@ def snowflake(order: int) -> np.ndarray:
 
     line = kochCurve(order)
     return arrange(line)
+
 
 @functools.lru_cache(maxsize=None)
 def cached_snowflake(order: int) -> np.ndarray:
@@ -202,6 +209,7 @@ def cached_snowflake(order: int) -> np.ndarray:
     print("Loaded order", order)
     return snowflake(order)
 
+
 def create_snowflake_figure(order: int) -> plt.figure:
     """
     Create a Matplotlib figure containing a Koch snowflake of a given order.
@@ -235,6 +243,7 @@ def create_snowflake_figure(order: int) -> plt.figure:
 
     return fig
 
+
 def preload_snowflakes(max_order: int) -> None:
     """
     Preload and cache Koch snowflakes up to a specified maximum order.
@@ -257,7 +266,8 @@ def preload_snowflakes(max_order: int) -> None:
     """
     for order in range(max_order, 0, -1):
         cached_snowflake(order)
-        
+
+
 # Preload snowflake points up to order 13 in a separate thread
 preload_thread = threading.Thread(target=preload_snowflakes, args=(13,))
 preload_thread.start()
@@ -276,14 +286,15 @@ ax.axis('equal')
 ax.axis('off')
 
 slider_ax = plt.axes([0.25, 0.1, 0.5, 0.03])
-order_slider = Slider(slider_ax, 'Order', 1, 13, valinit=1, valstep=1, valfmt='%d')
+order_slider = Slider(slider_ax, 'Order', 1, 13,
+                      valinit=1, valstep=1, valfmt='%d')
 
 # Plot the initial snowflake
 initial_snowflake = cached_snowflake(1)
 line, = ax.plot(initial_snowflake[:, 0], initial_snowflake[:, 1])
 
+
 def update(event) -> None:
-    
     """
     Update the snowflake plot based on the slider value.
 
@@ -297,7 +308,7 @@ def update(event) -> None:
     None
     """
     order = int(order_slider.val)
-    
+
     ax.clear()
     ax.axis('equal')
     ax.axis('off')
@@ -305,8 +316,10 @@ def update(event) -> None:
     snowflake_points = cached_snowflake(order)
     ax.plot(snowflake_points[:, 0], snowflake_points[:, 1])
 
-    min_x, max_x = np.min(snowflake_points[:, 0]), np.max(snowflake_points[:, 0])
-    min_y, max_y = np.min(snowflake_points[:, 1]), np.max(snowflake_points[:, 1])
+    min_x, max_x = np.min(snowflake_points[:, 0]), np.max(
+        snowflake_points[:, 0])
+    min_y, max_y = np.min(snowflake_points[:, 1]), np.max(
+        snowflake_points[:, 1])
 
     margin = 0.1
     ax.set_xlim(min_x - margin, max_x + margin)
@@ -319,4 +332,3 @@ order_slider.on_changed(update)
 
 
 plt.show()
-
